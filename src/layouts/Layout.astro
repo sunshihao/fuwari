@@ -28,7 +28,7 @@ interface Props {
 	setOGTypeArticle?: boolean;
 }
 
-let { title, banner, description, lang, setOGTypeArticle } = Astro.props;
+let { title, banner, description, setOGTypeArticle } = Astro.props;
 
 // apply a class to the body element to decide the height of the banner, only used for initial page load
 // Swup can update the body for each page visit, but it's after the page transition, causing a delay for banner height change
@@ -58,10 +58,17 @@ const favicons: Favicon[] =
 	siteConfig.favicon.length > 0 ? siteConfig.favicon : defaultFavicons;
 
 // const siteLang = siteConfig.lang.replace('_', '-')
-if (!lang) {
-	lang = `${siteConfig.lang}`;
+// if (!lang) {
+// 	lang = `${siteConfig.lang}`;
+// }
+// const siteLang = lang.replace("_", "-");
+
+function getCurrentLanguage(): string {
+  return siteConfig.lang || "en";
 }
-const siteLang = lang.replace("_", "-");
+
+const lang = getCurrentLanguage();
+
 
 const bannerOffsetByPosition = {
 	top: `${BANNER_HEIGHT_EXTEND}vh`,
@@ -73,7 +80,7 @@ const bannerOffset =
 ---
 
 <!DOCTYPE html>
-<html lang={siteLang} class="bg-[var(--page-bg)] transition text-[14px] md:text-[16px]"
+<html lang={lang} class="bg-[var(--page-bg)] transition text-[14px] md:text-[16px]"
 	  data-overlayscrollbars-initialize
 >
 	<head>

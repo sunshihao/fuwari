@@ -1,0 +1,31 @@
+---
+import type { GetStaticPaths } from "astro";
+import { languages, defaultLanguage } from "../../i18n/languages";
+import { setLanguage } from "../../i18n/translation";
+import HomePage from "../[...page].astro";
+import { PAGE_SIZE } from "../../constants/constants";
+import { getSortedPosts } from "../../utils/content-utils";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPaths = [];
+  
+  for (const lang of Object.keys(languages)) {
+    setLanguage(lang);
+    const allBlogPosts = await getSortedPosts();
+    const paginatedPaths = paginate(allBlogPosts, { 
+      pageSize: PAGE_SIZE,
+      params: { lang }
+    });
+    
+    allPaths.push(...paginatedPaths);
+  }
+  
+  return allPaths;
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const { lang } = Astro.params;
+if (lang) setLanguage(lang);
+---
+
+<HomePage page={page} />

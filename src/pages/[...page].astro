@@ -14,6 +14,11 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 const { page } = Astro.props;
 
+// 添加防御性检查
+if (!page || !page.data) {
+  return Astro.redirect('/404');
+}
+
 const len = page.data.length;
 ---
 

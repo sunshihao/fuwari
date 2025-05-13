@@ -1,38 +1,24 @@
-import Key from "../i18nKey";
-import type { Translation } from "../translation";
+import I18nKey from "../i18nKey";
 
-export const en: Translation = {
-	[Key.home]: "Home",
-	[Key.about]: "About",
-	[Key.archive]: "Archive",
-	[Key.search]: "Search",
-
-	[Key.tags]: "Tags",
-	[Key.categories]: "Categories",
-	[Key.recentPosts]: "Recent Posts",
-
-	[Key.comments]: "Comments",
-
-	[Key.untitled]: "Untitled",
-	[Key.uncategorized]: "Uncategorized",
-	[Key.noTags]: "No Tags",
-
-	[Key.wordCount]: "word",
-	[Key.wordsCount]: "words",
-	[Key.minuteCount]: "minute",
-	[Key.minutesCount]: "minutes",
-	[Key.postCount]: "post",
-	[Key.postsCount]: "posts",
-
-	[Key.themeColor]: "Theme Color",
-
-	[Key.lightMode]: "Light",
-	[Key.darkMode]: "Dark",
-	[Key.systemMode]: "System",
-
-	[Key.more]: "More",
-
-	[Key.author]: "Author",
-	[Key.publishedAt]: "Published at",
-	[Key.license]: "License",
+export const en: Record<I18nKey, string> = {
+  [I18nKey.about]: "About",
+  [I18nKey.archive]: "Archive",
+  [I18nKey.categories]: "Categories",
+  [I18nKey.tags]: "Tags",
+  [I18nKey.wordsCount]: "words",
+  [I18nKey.minutesCount]: "min read",
+  [I18nKey.more]: "More",
+  [I18nKey.author]: "Author",
+  [I18nKey.publishedAt]: "Published at",
+  [I18nKey.license]: "License",
+  [I18nKey.home]: "Home",
+  [I18nKey.search]: "Search",
+  [I18nKey.recentPosts]: "Recent Posts",
+  [I18nKey.readMore]: "Read More",
+  [I18nKey.nextPage]: "Next Page",
+  [I18nKey.prevPage]: "Previous Page",
+  [I18nKey.darkMode]: "Dark Mode",
+  [I18nKey.lightMode]: "Light Mode",
+  [I18nKey.language]: "Language",
+  // ... 其他翻译
 };

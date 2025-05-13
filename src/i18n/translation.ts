@@ -1,54 +1,49 @@
-import { siteConfig } from "../config";
-import type I18nKey from "./i18nKey";
+import { defaultLanguage } from "./languages";
 import { en } from "./languages/en";
-import { es } from "./languages/es";
-import { ja } from "./languages/ja";
-import { ko } from "./languages/ko";
-import { th } from "./languages/th";
-import { zh_CN } from "./languages/zh_CN";
-import { zh_TW } from "./languages/zh_TW";
+import { zh } from "./languages/zh";
+import I18nKey from "./i18nKey";
 
-export type Translation = {
-  [K in I18nKey]: string;
+// 导入所有语言翻译
+const translations: Record<string, Record<I18nKey, string>> = {
+  en,
+  zh,
+  // 添加更多语言
 };
 
-const defaultTranslation = en;
+// 当前语言，默认为英语
+let currentLang = defaultLanguage;
 
-const map: { [key: string]: Translation } = {
-  es: es,
-  en: en,
-  en_us: en,
-  en_gb: en,
-  en_au: en,
-  zh_cn: zh_CN,
-  zh_tw: zh_TW,
-  ja: ja,
-  ja_jp: ja,
-  ko: ko,
-  ko_kr: ko,
-  th: th,
-  th_th: th,
+// 设置当前语言
+export const setLanguage = (lang: string): void => {
+  if (translations[lang]) {
+    currentLang = lang;
+  } else {
+    console.warn(`Language ${lang} not supported, falling back to ${defaultLanguage}`);
+    currentLang = defaultLanguage;
+  }
 };
-
-export function getTranslation(lang: string): Translation {
-  return map[lang.toLowerCase()] || defaultTranslation;
-}
 
 // 获取当前语言
-function getCurrentLanguage(): string {
-  // 客户端渲染时，优先使用 localStorage 中保存的语言
-  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-    const savedLang = localStorage.getItem('preferred-lang');
-    if (savedLang) {
-      return savedLang.toLowerCase();
-    }
-  }
-  
-  // 否则使用配置中的语言
-  return (siteConfig.lang || "en").toLowerCase();
-}
+export const getCurrentLanguage = (): string => {
+  return currentLang;
+};
 
-export function i18n(key: I18nKey): string {
-  const lang = getCurrentLanguage();
-  return getTranslation(lang)[key];
-}
+// 获取翻译文本
+export const i18n = (key: I18nKey): string => {
+  if (!translations[currentLang]) {
+    return translations[defaultLanguage][key] || key;
+  }
+  return translations[currentLang][key] || translations[defaultLanguage][key] || key;
+};
+
+// 初始化语言
+export const initLanguage = (): void => {
+  // 从URL或localStorage获取语言设置
+  const urlLang = new URLSearchParams(window.location.search).get("lang");
+  const storedLang = localStorage.getItem("language");
+  const browserLang = navigator.language.split("-")[0];
+  
+  const lang = urlLang || storedLang || (translations[browserLang] ? browserLang : defaultLanguage);
+  setLanguage(lang);
+  localStorage.setItem("language", lang);
+};

@@ -24,6 +24,13 @@ export default defineConfig({
   site: "https://fuwari.vercel.app/",
   base: "/",
   trailingSlash: "always",
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "zh"],
+    routing: {
+      prefixDefaultLocale: false
+    }
+  },
   integrations: [
     tailwind(
         {

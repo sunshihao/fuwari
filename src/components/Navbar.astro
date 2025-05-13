@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import { navBarConfig, siteConfig } from "../config";
-import { LinkPresets } from "../constants/link-presets";
+import { getLinkPresets } from "../constants/link-presets"; // 修改为导入函数
 import { LinkPreset, type NavBarLink } from "../types/config";
 import { url } from "../utils/url-utils";
 import LightDarkSwitch from "./LightDarkSwitch.svelte";
@@ -10,6 +10,9 @@ import DisplaySettings from "./widget/DisplaySettings.svelte";
 import NavMenuPanel from "./widget/NavMenuPanel.astro";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 const className = Astro.props.class;
+
+// 每次渲染时重新获取最新的翻译
+const LinkPresets = getLinkPresets();
 
 let links: NavBarLink[] = navBarConfig.links.map(
 	(item: NavBarLink | LinkPreset): NavBarLink => {
@@ -32,6 +35,7 @@ let links: NavBarLink[] = navBarConfig.links.map(
             </div>
         </a>
         <div class="hidden md:flex">
+            
             {links.map((l) => {
                 return <a aria-label={l.name} href={l.external ? l.url : url(l.url)} target={l.external ? "_blank" : null}
                           class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95"
@@ -43,7 +47,7 @@ let links: NavBarLink[] = navBarConfig.links.map(
                 </a>;
             })}
         </div>
-        <div class="flex">
+        <div class="flex items-center gap-2">
             <!--<SearchPanel client:load>-->
             <Search client:only="svelte"></Search>
             <LanguageSwitcher />
@@ -52,6 +56,7 @@ let links: NavBarLink[] = navBarConfig.links.map(
                         <Icon name="material-symbols:palette-outline" class="text-[1.25rem]"></Icon>
                     </button>
             )}
+
             <LightDarkSwitch client:only="svelte"></LightDarkSwitch>
             <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden" id="nav-menu-switch">
                 <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]"></Icon>
@@ -116,4 +121,6 @@ async function loadPagefind() {
     pagefind.search('')     // speed up the first search
 }
 loadPagefind()
+
+export const prerender = false
 </script>}

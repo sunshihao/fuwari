@@ -1,37 +1,43 @@
 enum I18nKey {
-	home = "home",
-	about = "about",
-	archive = "archive",
-	search = "search",
+  // 已有的键
+  about = "about",
+  archive = "archive",
+  categories = "categories",
+  tags = "tags",
 
-	tags = "tags",
-	categories = "categories",
-	recentPosts = "recentPosts",
+  
+  // 添加更多需要的键
+  home = "home",
+  search = "search",
+  recentPosts = "recentPosts",
+  readMore = "readMore",
+  nextPage = "nextPage",
+  prevPage = "prevPage",
 
-	comments = "comments",
+  language = "language",
+  comments = "comments",
+  untitled = "untitled",
+  uncategorized = "uncategorized",
+  noTags = "noTags",
 
-	untitled = "untitled",
-	uncategorized = "uncategorized",
-	noTags = "noTags",
+  wordCount = "wordCount",
+  wordsCount = "wordsCount",
+  minuteCount = "minuteCount",
+  minutesCount = "minutesCount",
+  postCount = "postCount",
+  postsCount = "postsCount",
 
-	wordCount = "wordCount",
-	wordsCount = "wordsCount",
-	minuteCount = "minuteCount",
-	minutesCount = "minutesCount",
-	postCount = "postCount",
-	postsCount = "postsCount",
+  themeColor = "themeColor",
 
-	themeColor = "themeColor",
+  lightMode = "lightMode",
+  darkMode = "darkMode",
+  systemMode = "systemMode",
 
-	lightMode = "lightMode",
-	darkMode = "darkMode",
-	systemMode = "systemMode",
+  more = "more",
 
-	more = "more",
-
-	author = "author",
-	publishedAt = "publishedAt",
-	license = "license",
+  author = "author",
+  publishedAt = "publishedAt",
+  license = "license",
 }
 
 export default I18nKey;

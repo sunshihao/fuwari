@@ -11,7 +11,8 @@ export const getStaticPaths = (async ({ paginate }) => {
   
   for (const lang of Object.keys(languages)) {
     setLanguage(lang);
-    const allBlogPosts = await getSortedPosts();
+    // 传入语言参数，只获取该语言的文章
+    const allBlogPosts = await getSortedPosts(lang);
     const paginatedPaths = paginate(allBlogPosts, { 
       pageSize: PAGE_SIZE,
       params: { lang }

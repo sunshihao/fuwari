@@ -3,17 +3,35 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getCurrentLanguage } from "../i18n/translation";
 
-export const getSortedPosts = async (lang?: string) => {
-  const currentLang = lang || getCurrentLanguage();
-  const allPosts = await getCollection("posts", (post) => {
-    // 根据语言筛选文章
-    return post.data.lang === currentLang && (!import.meta.env.PROD || !post.data.draft);
+// 修改 getSortedPosts 函数，添加语言筛选
+export async function getSortedPosts(lang?: string) {
+  const posts = await getCollection("posts", ({ data }) => {
+    return import.meta.env.PROD ? !data.draft : true;
   });
   
-  return allPosts.sort((a, b) => {
-    return new Date(b.data.published).getTime() - new Date(a.data.published).getTime();
-  });
-};
+  // 如果指定了语言，则筛选该语言的文章
+  const filteredPosts = lang 
+    ? posts.filter(post => {
+        // 优先使用 frontmatter 中的 lang 字段
+        if (post.data.lang) {
+          return post.data.lang === lang;
+        }
+        
+        // 如果没有 lang 字段，则根据文件路径判断
+        const pathParts = post.id.split('/');
+        if (pathParts.length > 0) {
+          return pathParts[0] === lang;
+        }
+        
+        return false;
+      })
+    : posts;
+  
+  // 按发布日期排序
+  return filteredPosts.sort(
+    (a, b) => b.data.published.valueOf() - a.data.published.valueOf()
+  );
+}
 
 export async function getTagList(): Promise<Tag[]> {
 	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {

@@ -6,9 +6,14 @@ import type {
 } from "./types/config";
 import { LinkPreset } from "./types/config";
 
-// 获取用户首选语言
+// 获取用户首选语言 - 只在浏览器中执行
 function getUserPreferredLanguage(): string {
-  // 在服务器端渲染时，无法访问 localStorage
+  // 如果不在浏览器环境中，直接返回默认语言
+  if (typeof window === 'undefined') {
+    return 'en';
+  }
+  
+  // 在浏览器中检查 localStorage
   if (typeof localStorage !== 'undefined') {
     const savedLang = localStorage.getItem('preferred-lang');
     if (savedLang) {
@@ -16,9 +21,10 @@ function getUserPreferredLanguage(): string {
     }
   }
   
-  // 如果没有保存的语言偏好，则使用浏览器语言或默认语言
+  // 在浏览器中检查 navigator.language
   if (typeof navigator !== 'undefined') {
     const browserLang = navigator.language.replace('-', '_').toLowerCase();
+    console.log('browserLang---', browserLang);
     // 检查是否支持该语言
     const supportedLangs = ['en', 'zh'];
     for (const lang of supportedLangs) {
@@ -35,10 +41,13 @@ function getUserPreferredLanguage(): string {
 // 导出 getUserPreferredLanguage 函数，使其可以在其他文件中使用
 export { getUserPreferredLanguage };
 
+// 设置默认语言，构建时使用
+const defaultLang = 'en';
+
 export const siteConfig: SiteConfig = {
 	title: "William Sun's  Blog",
 	subtitle: "A spirit of independence and a mind of freedom",
-	lang: getUserPreferredLanguage(), // 使用函数获取用户首选语言
+	lang: 'en', // 使用静态设置的英语作为默认语言
 	themeColor: {
 		hue: 250, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
 		fixed: false, // Hide the theme color picker for visitors
@@ -110,3 +119,25 @@ export const licenseConfig: LicenseConfig = {
 	name: "CC BY-NC-SA 4.0",
 	url: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
 };
+
+
+// 在浏览器中动态更新语言
+if (typeof window !== 'undefined') {
+  // 确保代码在浏览器环境中运行
+  window.addEventListener('DOMContentLoaded', () => {
+    const userLang = getUserPreferredLanguage();
+    // 如果用户语言与默认语言不同，可以在这里处理
+    // 例如：重定向到对应语言的页面
+    if (userLang !== defaultLang) {
+      // 获取当前路径
+      const currentPath = window.location.pathname;
+      // 检查路径是否已经包含语言代码
+      const hasLangPrefix = /^\/[a-z]{2}(\/|$)/.test(currentPath);
+      
+      if (!hasLangPrefix) {
+        // 如果路径不包含语言代码，则重定向到用户语言的页面
+        window.location.href = `/${userLang}${currentPath}`;
+      }
+    }
+  });
+}

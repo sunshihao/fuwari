@@ -3,6 +3,7 @@ import { getUserPreferredLanguage } from "../config";
 
 // 获取用户首选语言
 const preferredLang = getUserPreferredLanguage();
+console.log(preferredLang); 
 
 // 重定向到首选语言的首页
 return Astro.redirect(`/${preferredLang}/`);

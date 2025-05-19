@@ -6,11 +6,36 @@ import type {
 } from "./types/config";
 import { LinkPreset } from "./types/config";
 
+// 获取用户首选语言
+function getUserPreferredLanguage(): string {
+  // 在服务器端渲染时，无法访问 localStorage
+  if (typeof localStorage !== 'undefined') {
+    const savedLang = localStorage.getItem('preferred-lang');
+    if (savedLang) {
+      return savedLang;
+    }
+  }
+  
+  // 如果没有保存的语言偏好，则使用浏览器语言或默认语言
+  if (typeof navigator !== 'undefined') {
+    const browserLang = navigator.language.replace('-', '_').toLowerCase();
+    // 检查是否支持该语言
+    const supportedLangs = ['en', 'zh_cn', 'zh_tw', 'ja', 'ko', 'es', 'th'];
+    for (const lang of supportedLangs) {
+      if (browserLang.startsWith(lang)) {
+        return browserLang;
+      }
+    }
+  }
+  
+  // 默认返回英语
+  return 'en';
+}
+
 export const siteConfig: SiteConfig = {
 	title: "William Sun's  Blog",
 	subtitle: "A spirit of independence and a mind of freedom",
-	// lang: "zh_CN", // 'en', 'zh_CN', 'zh_TW', 'ja', 'ko', 'es', 'th'
-	lang: getUserPreferredLanguage() ,
+	lang: getUserPreferredLanguage(), // 使用函数获取用户首选语言
 	themeColor: {
 		hue: 250, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
 		fixed: false, // Hide the theme color picker for visitors
@@ -82,32 +107,3 @@ export const licenseConfig: LicenseConfig = {
 	name: "CC BY-NC-SA 4.0",
 	url: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
 };
-
-// 在文件顶部添加以下代码
-// 获取用户首选语言
-function getUserPreferredLanguage(): string {
-  debugger;
-  // 在服务器端渲染时，无法访问 localStorage
-  if (typeof localStorage !== 'undefined') {
-    const savedLang = localStorage.getItem('preferred-lang');
-	debugger
-    if (savedLang) {
-      return savedLang;
-    }
-  }
-  
-  // 如果没有保存的语言偏好，则使用浏览器语言或默认语言
-  if (typeof navigator !== 'undefined') {
-    const browserLang = navigator.language.replace('-', '_').toLowerCase();
-    // 检查是否支持该语言
-    const supportedLangs = ['en', 'zh_cn', 'zh_tw', 'ja', 'ko', 'es', 'th'];
-    for (const lang of supportedLangs) {
-      if (browserLang.startsWith(lang)) {
-        return browserLang;
-      }
-    }
-  }
-  
-  // 默认返回英语
-  return 'en';
-}

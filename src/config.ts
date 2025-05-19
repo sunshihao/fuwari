@@ -20,7 +20,7 @@ function getUserPreferredLanguage(): string {
   if (typeof navigator !== 'undefined') {
     const browserLang = navigator.language.replace('-', '_').toLowerCase();
     // 检查是否支持该语言
-    const supportedLangs = ['en', 'zh_cn', 'zh_tw', 'ja', 'ko', 'es', 'th'];
+    const supportedLangs = ['en', 'zh'];
     for (const lang of supportedLangs) {
       if (browserLang.startsWith(lang)) {
         return browserLang;
@@ -31,6 +31,9 @@ function getUserPreferredLanguage(): string {
   // 默认返回英语
   return 'en';
 }
+
+// 导出 getUserPreferredLanguage 函数，使其可以在其他文件中使用
+export { getUserPreferredLanguage };
 
 export const siteConfig: SiteConfig = {
 	title: "William Sun's  Blog",

@@ -1,6 +1,9 @@
 ---
 import { Icon } from "astro-icon/components";
-import { languages } from "../i18n/languages";
+import { languages, defaultLanguage } from "../i18n/languages";
+import I18nKey from "../i18n/i18nKey";
+import { i18n } from "../i18n/translation";
+import { getUserPreferredLanguage } from "../config";
 
 // 获取当前路径
 const currentPath = Astro.url.pathname;
@@ -15,9 +18,9 @@ const currentPath = Astro.url.pathname;
       {Object.values(languages).map((lang) => (
         <a
           href={`/${lang.code}${currentPath.replace(/^\/[a-z]{2}\/|^\//, "/")}`}
-          class="flex transition whitespace-nowrap items-center !justify-start w-full btn-plain scale-animation rounded-lg h-9 px-3 font-medium active:scale-95 mb-0.5"
+          class="flex transition whitespace-nowrap items-center !justify-start w-full btn-plain scale-animation rounded-lg h-9 px-3 font-medium active:scale-95 mb-0.5 language-item"
           data-lang={lang.code}
-          onclick="forceRefresh(event, this.href)"
+          onclick="switchLanguage(event, this.dataset.lang, this.href)"
         >
           {lang.name}
         </a>
@@ -62,15 +65,27 @@ const currentPath = Astro.url.pathname;
   
   // 标记当前选中的语言
   const currentLangItem = languagePanel?.querySelector(`[data-lang="${currentLang}"]`);
-  currentLangItem?.classList.add("current-theme-btn");
+  currentLangItem?.classList.add("current-language");
   
-  // 强制刷新页面的函数
-  window.forceRefresh = function(event, url) {
+  // 切换语言的函数
+  window.switchLanguage = function(event, lang, url) {
     event.preventDefault();
+    
+    // 添加点击动画效果
+    const clickedItem = event.currentTarget;
+    clickedItem.classList.add('language-click-effect');
+    
+    // 保存用户选择的语言到 localStorage
+    localStorage.setItem('preferred-lang', lang);
+    
     // 保存当前滚动位置
     localStorage.setItem('scrollPosition', window.scrollY.toString());
-    // 使用 location.href 进行硬刷新而不是客户端导航
-    window.location.href = url;
+    
+    // 延迟跳转，让动画效果显示
+    setTimeout(() => {
+      // 使用 location.href 进行硬刷新而不是客户端导航
+      window.location.href = url;
+    }, 150);
   }
   
   // 页面加载时恢复滚动位置
@@ -98,5 +113,44 @@ const currentPath = Astro.url.pathname;
     transform: translateY(-10px);
     opacity: 0;
     pointer-events: none;
+  }
+  
+  .current-language {
+    background-color: var(--btn-active-bg);
+    color: var(--btn-active-color);
+  }
+  
+  .language-click-effect {
+    animation: pulse 0.15s ease-in-out;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+  
+  .language-item {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .language-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  }
+  
+  .language-item:active::after {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0.1;
   }
 </style>

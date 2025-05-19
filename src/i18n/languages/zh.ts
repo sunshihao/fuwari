@@ -1,23 +1,42 @@
-import I18nKey from "../i18nKey";
+import Key from "../i18nKey";
+import type { Translation } from "../translation";
 
-export const zh: Record<I18nKey, string> = {
-  [I18nKey.about]: "关于",
-  [I18nKey.archive]: "归档",
-  [I18nKey.categories]: "分类",
-  [I18nKey.tags]: "标签",
-  [I18nKey.wordsCount]: "字",
-  [I18nKey.minutesCount]: "分钟阅读",
-  [I18nKey.more]: "更多",
-  [I18nKey.author]: "作者",
-  [I18nKey.publishedAt]: "发布于",
-  [I18nKey.license]: "许可证",
-  [I18nKey.home]: "首页",
-  [I18nKey.search]: "搜索",
-  [I18nKey.recentPosts]: "最近文章",
-  [I18nKey.readMore]: "阅读更多",
-  [I18nKey.nextPage]: "下一页",
-  [I18nKey.prevPage]: "上一页",
-  [I18nKey.darkMode]: "深色模式",
-  [I18nKey.lightMode]: "浅色模式",
-  [I18nKey.language]: "语言",
+export const zh: Translation = {
+  [Key.home]: "首页",
+  [Key.about]: "关于",
+  [Key.archive]: "归档",
+  [Key.search]: "搜索",
+
+  [Key.tags]: "标签",
+  [Key.categories]: "分类",
+  [Key.recentPosts]: "最新文章",
+
+  [Key.comments]: "评论",
+
+  [Key.untitled]: "无标题",
+  [Key.uncategorized]: "未分类",
+  [Key.noTags]: "无标签",
+
+  [Key.wordCount]: "字",
+  [Key.wordsCount]: "字",
+  [Key.minuteCount]: "分钟",
+  [Key.minutesCount]: "分钟阅读",
+  [Key.postCount]: "篇文章",
+  [Key.postsCount]: "篇文章",
+
+  [Key.themeColor]: "主题色",
+
+  [Key.lightMode]: "浅色模式",
+  [Key.darkMode]: "深色模式",
+  [Key.systemMode]: "跟随系统",
+
+  [Key.more]: "更多",
+  [Key.readMore]: "阅读更多",
+  [Key.nextPage]: "下一页",
+  [Key.prevPage]: "上一页",
+
+  [Key.author]: "作者",
+  [Key.publishedAt]: "发布于",
+  [Key.license]: "许可证",
+  [Key.language]: "语言",
 };

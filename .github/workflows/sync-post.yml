@@ -1,0 +1,69 @@
+name: Sync Post
+
+# Controls when the workflow will run
+on:
+  # schedule:
+  #   - cron: "30 1 * * *"
+  # https://docs.github.com/cn/developers/webhooks-and-events/events/issue-event-types
+  issues:
+    types:
+      - opened
+      - closed
+      - edited
+      - renamed
+      - labeled
+      - unlabeled
+      - reopened
+      - committed # 修改？
+  workflow_dispatch:
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  GH_USER: ${{ secrets.GH_USER }}
+  GH_PROJECT_NAME: ${{ secrets.GH_PROJECT_NAME }}
+  NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+  NEXT_PUBLIC_SITE_EMAIL_FROM: ${{ secrets.NEXT_PUBLIC_SITE_EMAIL_FROM }}
+  SITE_NOTIFICATION_EMAIL_TO: ${{ secrets.SITE_NOTIFICATION_EMAIL_TO }}
+  LINK_PREVIEW_API_BASE_URL: ${{ secrets.LINK_PREVIEW_API_BASE_URL }}
+jobs:
+  Publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js 🚀
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.14.0' # 指定具体的版本号
+
+      - name: Git config 🔧
+        run: |
+          git config --global user.name "sunshihao"
+          git config --global user.email "sunshihao945@outlook.com"
+
+      - name: Display runtime info ✨
+        run: |
+          echo '当前目录：'
+          pwd
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.6.5 # 或者您想要使用的 pnpm 版本
+
+      - name: Install 🔧
+        run: pnpm install
+
+      # - name: Build ⛏️
+      #   run: pnpm run build
+
+      - name: Update blog files ⛏️
+        run: |
+          pnpm run sync-post
+          git add .
+          git commit -m 'chore(ci): blog sync'
+
+      - name: Pull latest changes from remote
+        run: git pull --rebase origin main
+
+      - name: Push changes to remote
+        run: git push

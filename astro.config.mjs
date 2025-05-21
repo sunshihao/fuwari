@@ -19,6 +19,9 @@ import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
 import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
+import { fileURLToPath } from 'url';
+
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://fuwari.vercel.app/",
@@ -121,6 +124,17 @@ export default defineConfig({
     ],
   },
   vite: {
+    resolve: {
+      alias: {
+        '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+        '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
+        '@constants': fileURLToPath(new URL('./src/constants', import.meta.url)),
+        '@utils': fileURLToPath(new URL('./src/utils', import.meta.url)),
+        '@i18n': fileURLToPath(new URL('./src/i18n', import.meta.url)),
+        '@layouts': fileURLToPath(new URL('./src/layouts', import.meta.url)),
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      }
+    },
     build: {
       rollupOptions: {
         onwarn(warning, warn) {

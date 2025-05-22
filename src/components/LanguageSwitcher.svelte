@@ -1,5 +1,9 @@
 <script>
   import { onMount } from 'svelte';
+  // 移除 Astro 图标导入
+  // import { Icon } from "astro-icon/components";
+  // 如果需要使用 Svelte 兼容的图标库，可以导入 @iconify/svelte
+  import Icon from '@iconify/svelte';
   import { languages } from "../i18n/languages";
   import { getCurrentLanguage } from "../i18n/translation";
   
@@ -82,7 +86,8 @@
 
 <div class="language-switcher relative z-50" role="menu" tabindex="-1" bind:this={languageSwitcher}>
   <button aria-label="Language" role="menuitem" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90" id="language-switch">
-    <span class="material-symbols-language text-[1.25rem]">language</span>
+     <!-- 修改 Icon 组件的使用方式 -->
+     <Icon icon="material-symbols:language" class="text-[1.25rem]" />
   </button>
   <div id="language-panel" class="hidden lg:block absolute transition float-panel-closed top-11 -right-2 pt-5">
     <div class="card-base float-panel p-2">

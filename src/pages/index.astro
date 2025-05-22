@@ -1,6 +1,10 @@
 ---
 import { getUserPreferredLanguage } from "../config";
 import { languages, defaultLanguage } from "../i18n/languages";
+import { setLanguage } from "../i18n/translation";
+import HomePage from "./[...page].astro";
+import { getSortedPosts } from "../utils/content-utils";
+import { PAGE_SIZE } from "../constants/constants";
 
 // 获取用户首选语言
 let preferredLang = getUserPreferredLanguage();
@@ -10,6 +14,27 @@ if (!Object.keys(languages).includes(preferredLang)) {
   preferredLang = defaultLanguage;
 }
 
-// 重定向到首选语言的首页
-return Astro.redirect(`/${preferredLang}/`);
+// 设置当前语言
+setLanguage(preferredLang);
+
+// 获取当前语言的文章
+const allBlogPosts = await getSortedPosts(preferredLang);
+
+// 创建分页数据
+const page = {
+  data: allBlogPosts.slice(0, PAGE_SIZE),
+  start: 0,
+  end: Math.min(PAGE_SIZE - 1, allBlogPosts.length - 1),
+  size: PAGE_SIZE,
+  total: allBlogPosts.length,
+  currentPage: 1,
+  lastPage: Math.ceil(allBlogPosts.length / PAGE_SIZE),
+  url: {
+    current: "/",
+    prev: undefined,
+    next: allBlogPosts.length > PAGE_SIZE ? `/${preferredLang}/2/` : undefined
+  }
+};
 ---
+
+<HomePage page={page} />

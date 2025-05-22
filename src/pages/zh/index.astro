@@ -1,0 +1,30 @@
+---
+import { setLanguage } from "../../i18n/translation";
+import HomePage from "../[...page].astro";
+import { getSortedPosts } from "../../utils/content-utils";
+import { PAGE_SIZE } from "../../constants/constants";
+
+// 设置当前语言为中文
+setLanguage("zh");
+
+// 获取中文文章
+const allBlogPosts = await getSortedPosts("zh");
+
+// 创建分页数据
+const page = {
+  data: allBlogPosts.slice(0, PAGE_SIZE),
+  start: 0,
+  end: Math.min(PAGE_SIZE - 1, allBlogPosts.length - 1),
+  size: PAGE_SIZE,
+  total: allBlogPosts.length,
+  currentPage: 1,
+  lastPage: Math.ceil(allBlogPosts.length / PAGE_SIZE),
+  url: {
+    current: "/zh/",
+    prev: undefined,
+    next: allBlogPosts.length > PAGE_SIZE ? "/zh/2/" : undefined
+  }
+};
+---
+
+<HomePage page={page} />

@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { languages, defaultLanguage } from "../../i18n/languages";
+import { languages } from "../../i18n/languages";
 import { setLanguage } from "../../i18n/translation";
 import HomePage from "../[...page].astro";
 import { PAGE_SIZE } from "../../constants/constants";
@@ -10,12 +10,16 @@ export const getStaticPaths = (async ({ paginate }) => {
   const allPaths = [];
   
   for (const lang of Object.keys(languages)) {
+    // 为所有语言生成路径，包括页码为1的页面
     setLanguage(lang);
+    
     // 传入语言参数，只获取该语言的文章
     const allBlogPosts = await getSortedPosts(lang);
+    
+    // 生成所有页面的分页路径
     const paginatedPaths = paginate(allBlogPosts, { 
       pageSize: PAGE_SIZE,
-      params: { lang }
+      params: { lang: lang },
     });
     
     allPaths.push(...paginatedPaths);
@@ -26,6 +30,8 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 const { page } = Astro.props;
 const { lang } = Astro.params;
+
+// 设置当前语言
 if (lang) setLanguage(lang);
 ---
 

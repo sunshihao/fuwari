@@ -126,18 +126,8 @@ if (typeof window !== 'undefined') {
   // 确保代码在浏览器环境中运行
   window.addEventListener('DOMContentLoaded', () => {
     const userLang = getUserPreferredLanguage();
-    // 如果用户语言与默认语言不同，可以在这里处理
-    // 例如：重定向到对应语言的页面
-    if (userLang !== defaultLang) {
-      // 获取当前路径
-      const currentPath = window.location.pathname;
-      // 检查路径是否已经包含语言代码
-      const hasLangPrefix = /^\/[a-z]{2}(\/|$)/.test(currentPath);
-      
-      if (!hasLangPrefix) {
-        // 如果路径不包含语言代码，则重定向到用户语言的页面
-        window.location.href = `/${userLang}${currentPath}`;
-      }
-    }
+    // 不再需要重定向，因为根路径和语言路径都可以访问相应语言内容
+    // 只需要保存用户首选语言
+    localStorage.setItem('preferred-lang', userLang);
   });
 }

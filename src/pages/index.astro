@@ -1,9 +1,14 @@
 ---
 import { getUserPreferredLanguage } from "../config";
+import { languages, defaultLanguage } from "../i18n/languages";
 
 // 获取用户首选语言
-const preferredLang = getUserPreferredLanguage();
-console.log(preferredLang); 
+let preferredLang = getUserPreferredLanguage();
+
+// 确保语言在支持的语言列表中，否则使用默认语言
+if (!Object.keys(languages).includes(preferredLang)) {
+  preferredLang = defaultLanguage;
+}
 
 // 重定向到首选语言的首页
 return Astro.redirect(`/${preferredLang}/`);

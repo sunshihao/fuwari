@@ -1,8 +1,7 @@
 ---
 title: 前端工程CSS初始化全局设置
-published: 2024-05-22
-description: "如何使用这个博客模板。"
-# image: "./cover.jpeg"
+published: 2023-10-20
+description: "前端工程CSS初始化全局设置"
 tags: ["css", "front-end"]
 category: front-end
 lang: "zh"

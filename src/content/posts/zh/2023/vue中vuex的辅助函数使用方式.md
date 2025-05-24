@@ -1,9 +1,8 @@
 ---
 title: vue中vuex的辅助函数使用方式
-published: 2024-05-22
+published: 2023-10-11
 description: "vue中vuex的辅助函数使用方式"
-# image: "./cover.jpeg"
-tags: ["vue", "front-end"]
+tags: ["vue", "vuex","front-end"]
 category: front-end
 lang: "zh"
 draft: false

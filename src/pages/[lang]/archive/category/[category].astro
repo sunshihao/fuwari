@@ -1,0 +1,43 @@
+---
+import type { GetStaticPaths } from "astro";
+import { languages } from "../../../../i18n/languages";
+import { setLanguage } from "../../../../i18n/translation";
+import ArchivePanel from "@/components/ArchivePanel.astro";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getCategoryList } from "@utils/content-utils";
+
+export const getStaticPaths = (async () => {
+  const allPaths = [];
+  
+  for (const lang of Object.keys(languages)) {
+    // 设置当前语言
+    setLanguage(lang);
+    
+    // 获取分类列表
+    const categories = await getCategoryList();
+    
+    // 为每个分类生成路径
+    categories.forEach((category) => {
+      allPaths.push({
+        params: {
+          lang: lang,
+          category: category.name,
+        },
+      });
+    });
+  }
+  
+  return allPaths;
+}) satisfies GetStaticPaths;
+
+const { lang, category } = Astro.params;
+
+// 设置当前语言
+if (lang) setLanguage(lang);
+---
+
+<MainGridLayout title={i18n(I18nKey.archive)} description={i18n(I18nKey.archive)}>
+    <ArchivePanel categories={[category as string]}></ArchivePanel>
+</MainGridLayout>

@@ -1,0 +1,51 @@
+---
+import type { GetStaticPaths } from "astro";
+import { languages } from "../../../../i18n/languages";
+import { setLanguage } from "../../../../i18n/translation";
+import ArchivePanel from "@/components/ArchivePanel.astro";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getSortedPosts } from "@utils/content-utils";
+
+export const getStaticPaths = (async () => {
+  const allPaths = [];
+  
+  for (const lang of Object.keys(languages)) {
+    // 设置当前语言
+    setLanguage(lang);
+    
+    // 获取该语言的文章
+    const posts = await getSortedPosts(lang);
+    
+    // 收集该语言下的所有标签
+    const allTags = posts.reduce<Set<string>>((acc, post) => {
+      post.data.tags.forEach((tag) => acc.add(tag));
+      return acc;
+    }, new Set());
+    
+    const allTagsArray = Array.from(allTags);
+    
+    // 为每个标签生成路径
+    allTagsArray.forEach((tag) => {
+      allPaths.push({
+        params: {
+          lang: lang,
+          tag: tag,
+        },
+      });
+    });
+  }
+  
+  return allPaths;
+}) satisfies GetStaticPaths;
+
+const { lang, tag } = Astro.params;
+
+// 设置当前语言
+if (lang) setLanguage(lang);
+---
+
+<MainGridLayout title={i18n(I18nKey.archive)} description={i18n(I18nKey.archive)}>
+    <ArchivePanel tags={[tag as string]}></ArchivePanel>
+</MainGridLayout>

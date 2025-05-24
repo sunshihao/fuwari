@@ -1,7 +1,7 @@
 ---
 import { UNCATEGORIZED } from "@constants/constants";
 import I18nKey from "../i18n/i18nKey";
-import { i18n } from "../i18n/translation";
+import { i18n, getCurrentLanguage } from "../i18n/translation";
 import { getSortedPosts } from "../utils/content-utils";
 import { getPostUrlBySlug } from "../utils/url-utils";
 
@@ -12,7 +12,11 @@ interface Props {
 }
 const { tags, categories } = Astro.props;
 
-let posts = await getSortedPosts();
+// 获取当前语言
+const currentLang = getCurrentLanguage();
+
+// 获取当前语言的文章
+let posts = await getSortedPosts(currentLang);
 
 if (Array.isArray(tags) && tags.length > 0) {
 	posts = posts.filter(

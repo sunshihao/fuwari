@@ -7,21 +7,14 @@ import type {
 import { LinkPreset } from "./types/config";
 
 // 获取用户首选语言 - 只在浏览器中执行
+// 获取用户首选语言 - 只在浏览器中执行
 function getUserPreferredLanguage(): string {
   // 如果不在浏览器环境中，直接返回默认语言
   if (typeof window === 'undefined') {
     return 'en';
   }
   
-  // 在浏览器中检查 localStorage
-  if (typeof localStorage !== 'undefined') {
-    const savedLang = localStorage.getItem('preferred-lang');
-    if (savedLang) {
-      return savedLang;
-    }
-  }
-  
-  // 在浏览器中检查 navigator.language
+  // 在浏览器中优先检查 navigator.language
   if (typeof navigator !== 'undefined') {
     const browserLang = navigator.language.replace('-', '_').toLowerCase();
     console.log('browserLang---', browserLang);
@@ -29,8 +22,16 @@ function getUserPreferredLanguage(): string {
     const supportedLangs = ['en', 'zh'];
     for (const lang of supportedLangs) {
       if (browserLang.startsWith(lang)) {
-        return browserLang;
+        return lang; // 返回匹配的语言代码
       }
+    }
+  }
+  
+  // 其次检查 localStorage
+  if (typeof localStorage !== 'undefined') {
+    const savedLang = localStorage.getItem('preferred-lang');
+    if (savedLang) {
+      return savedLang;
     }
   }
   

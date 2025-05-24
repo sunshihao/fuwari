@@ -38,12 +38,15 @@ export const i18n = (key: I18nKey): string => {
 
 // 初始化语言
 export const initLanguage = (): void => {
+  // 优先使用浏览器语言
+  const browserLang = navigator.language.split("-")[0];
+  
   // 从URL或localStorage获取语言设置
   const urlLang = new URLSearchParams(window.location.search).get("lang");
   const storedLang = localStorage.getItem("language");
-  const browserLang = navigator.language.split("-")[0];
   
-  const lang = urlLang || storedLang || (translations[browserLang] ? browserLang : defaultLanguage);
+  // 优先级：浏览器语言 > URL参数 > localStorage > 默认语言
+  const lang = (translations[browserLang] ? browserLang : null) || urlLang || storedLang || defaultLanguage;
   setLanguage(lang);
   localStorage.setItem("language", lang);
 };

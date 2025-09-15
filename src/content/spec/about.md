@@ -1,9 +1,43 @@
 # About
-This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
+<!-- This is the demo site for [Fuwari](https://github.com/saicaca/fuwari). -->
 
-::github{repo="saicaca/fuwari"}
+::github{repo="sunshihao/fuwari"}   
 
-> ### Sources of images used in this site
-> - [Unsplash](https://unsplash.com/)
-> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
-> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+
+👋 你好，世界！
+
+欢迎来到我的数字自留地——dhc.ink。这里是我记录、分享和创造的地方，主要围绕着技术、编程和一切让我感到好奇的事物。
+
+我是 Williamson，一名对世界充满好奇心的后端开发工程师和技术爱好者。我的日常是与 Python、Go、Linux 和云原生技术打交道，热衷于探索如何用代码构建高效、可靠的系统。我相信“纸上得来终觉浅，绝知此事要躬行”，因此这里的大部分内容都是我第一手实践和思考的总结。
+
+🚀 在这里你能找到什么？
+
+这个博客是我个人的学习笔记和项目日志，主要内容包括但不限于：
+
+
+
+
+
+💻 技术深潜：技术的实战教程、问题解决方案和最佳实践。
+
+
+
+⚙️ 效率工具：分享我的工作流优化、开发环境配置以及能提升生产力的软件和技巧。
+
+
+
+🌐 系统与架构：对服务器运维、微服务、分布式系统等后端架构的学习和思考。
+
+
+
+🤔 碎碎念与观点：偶尔也会跳出代码，记录一些对行业、职业发展的观察和个人随想。
+
+我的写作原则是：力求清晰，源自实践。我希望这里的每一篇文章都能为遇到同样问题的你提供一个明确的解决方案，或者为你打开一个新的思路。
+
+🌱 我的信念
+
+我坚信 Learn in Public 的力量。通过公开分享，不仅能巩固自己的知识，还能连接更多优秀的同行者。每一次写作，都是一次更深入的思考；每一次交流，都可能碰撞出新的火花。
+
+感谢你的到访，希望你能在这里找到一些有用的东西。
+
+urgently explore the unknown.
